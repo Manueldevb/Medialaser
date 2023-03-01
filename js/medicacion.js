@@ -1,0 +1,65 @@
+function buscar(argument) {
+	event.preventDefault();
+	var cedula = $("#cedula").val();
+	if (!cedula) {
+		alert("Por favor ingresa un numero de cedula")		
+	}
+	else {
+		// Jquery sirve para abrevivar javascript y Ajax sirve como Post y Get pero sin recargar la pagina
+		$.get("controladores/medicacion.php", { tipo: 'consulta', cedula: cedula } ).done(function(data) {
+	    	data = JSON.parse(data);
+	    	console.log(data)
+	    	$('.btnupdate').show();
+	    	$("#id").val(data['id']);
+	    	$("#pacienteid").val(data['Paciente_id']);
+	    	$("#nombre").val(data['Paciente'])
+	    	$("#insumo").val(data['idins']).change();
+	    	$("#Fecha").val(data['fechamed']);
+	    	$("#descripcion").html(data['descripcion']);
+	    	$("#usu").val(data['Usuarios']);
+	  	})
+	 }
+
+}
+
+function buscar2(argument) {
+	event.preventDefault();
+	var cedula2 = $("#cedula").val();
+	if (!cedula2) {
+		alert("Por favor ingresa un numero de cedula")		
+	}
+	else {
+	  	$.get("controladores/medicacion.php", { tipo: 'consulta2', cedula2: cedula2 } ).done(function(data) {
+	    	data = JSON.parse(data);
+	    	console.log(data)
+	    	$('.btnupdate').show();
+	    	$("#id").val(data['id']);
+	    	$("#pacienteid").val(data['Paciente_id']);
+	    	$("#nombre").val(data['Paciente']);
+	  	})
+	}
+}
+function actualizar(argument) {
+	event.preventDefault();
+
+	$.post("controladores/medicacion.php?tipo=actualizar", $('#formulario').serializeArray() ).done(function(data) {
+		window.location.reload(); //si es para que recarge eso
+	});
+}
+
+function eliminar(argument) {
+	event.preventDefault();
+
+	var id = $("#id").val();
+
+	$.post("controladores/medicacion.php?tipo=eliminar", { id: id} ).done(function(data) {
+		window.location.reload(); 
+	});
+}
+function crear(argument) {
+	event.preventDefault();
+
+	$.post("controladores/medicacion.php?tipo=crear", $('#formulario').serializeArray() ).done(function(data) {
+		window.location.reload();
+	});
+}
